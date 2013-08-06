@@ -90,13 +90,24 @@ Note that the timer itself is not retained; if all outstanding events (including
 
 If the default termination handler doesn't do everything you need, you have a couple of options. The first is to trap the `seppuku` event on the server object, which is emitted as soon as the seppuku process begins. It receives two parameters, the first the amount of time until the process will be terminated, and the second a cancellation callback (more about this later).
 
-If you desire a completely custom termination process, you can pass your own `kaishakunin` method as an option—at which point you're completely on your own. Here's an example:
+Here's an example:
 
 ```javascript
 server.on('seppuku', function(count, cancel) {
-    // Terminate immediately
-    process.exit(255);
+    // Terminate outstanding long-running connections
+    terminateAllConnections(); // ...
 });
+```
+
+If you desire a completely custom termination process, you can pass your own `kaishakunin` method as an option—at which point you're completely on your own. For example:
+
+```javascript
+var options = {
+    kaishakunin: function() {
+        // Terminate immediately
+        process.exit(255);
+    }
+}
 ```
 
 ## Initiating a seppuku operation manually

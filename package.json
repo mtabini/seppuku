@@ -1,6 +1,6 @@
 {
   "name": "seppuku",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Allow your worker processes to die honourably",
   "main": "lib/index.js",
   "scripts": {
