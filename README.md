@@ -2,7 +2,11 @@
 
 Seppuku (named after the highly ritual suicide ceremony of Japanese samurai) is a simple module that streamlines the process of gracefully shutting down worker processes in a Node.js cluster that serves web pages through [restify](https://npmjs.org/package/restify) or [express](https://npmjs.org/package/express). 
 
-It can be triggered manually, in response to an abnormal condition (e.g.: an unhandled exception), or automatically after a configurable number of requests to keep memory creep at bay. By default, it stops the server from accepting connections, instructs the parent process to respawn, and gives existing connections a period of time to shut down, after which it automatically terminates the worker process. To help prevent accidental hosing of your servers, these shutdown periods can be randomized so that two workers started at roughly the same time are less likely to enter seppuku at the same time.
+It can be triggered manually, in response to an abnormal condition (e.g.: an unhandled exception), or automatically after a configurable number of requests to keep memory creep at bay.  
+
+By default, it stops the server from accepting connections, instructs the parent process to respawn, and gives existing connections a period of time to shut down, after which it automatically terminates the worker process. 
+
+To help prevent accidental hosing of your servers, these shutdown periods can be randomized so that two workers started at roughly the same time are less likely to enter seppuku at the same time.
 
 ## Installation
 
@@ -46,13 +50,13 @@ Seppuku's functionality can be altered by passing a number of options, listed be
 
 ### Randomizing the termination time
 
-When a seppuku operation starts, the default `kaishakunin` (“beheading”) method shuts down the server and instructs the worker to disconnect from the parent process (which should then automatically spawn a new worker). Before terminating the worker process, `kaishakunin()` (“beheader”) waits a variable amount of time to allow existing requests to be terminated gracefully, after which, if any requests are still open, it calls `process.exit(1)`.
+When a seppuku operation starts, the default `kaishakunin` (“beheader”) method shuts down the server and instructs the worker to disconnect from the parent process (which should then automatically spawn a new worker). Before terminating the worker process, `kaishakunin()` waits a variable amount of time to allow existing requests to be terminated gracefully, after which, if any requests are still open, it calls `process.exit(1)`.
 
 The termination time is randomized in order to minimize the impact that multiple workers started on or around the same time could have if they entered a seppuku at the same time. You can provide a set of `minDeferralTime` and `maxDeferralTime` options to determine the randomization boundaries.
 
 ### Restarting automatically after a certain number of requests
 
-Seppuku has the ability to restart automatically after a certain number of requests have been processed by the server. This can be helpful if you have a creeping memory leak that you cannot attend right away. You can set the `maxRequest` option to any arbitrary number, or to zero if you want to turn off this functionality altogether.
+Seppuku has the ability to restart automatically after a certain number of requests have been processed by the server. This can be helpful if you have a creeping memory leak that you cannot attend to right away. You can set the `maxRequest` option to any arbitrary number, or to zero if you want to turn off this functionality altogether.
 
 By default, seppuku increments the request counter by one every time a request is processed, regardless of its type. If you wish, you can specify a `filter` function that receives the current request alongside the current request count and can pass a different weight value depending on the type of request. For example, if you don't want `HEAD` and `OPTIONS` requests to be counted towards the request count, you could write this filter:
 
