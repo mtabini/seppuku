@@ -4,6 +4,10 @@ Seppuku (named after the highly ritual suicide ceremony of Japanese samurai) is 
 
 It can be triggered manually, in response to an abnormal condition (e.g.: an unhandled exception), or automatically after a configurable number of requests to keep memory creep at bay. By default, it stops the server from accepting connections, instructs the parent process to respawn, and gives existing connections a period of time to shut down, after which it automatically terminates the worker process. To help prevent accidental hosing of your servers, these shutdown periods can be randomized so that two workers started at roughly the same time are less likely to enter seppuku at the same time.
 
+## Installation
+
+    npm install seppuku
+
 ## Usage
 
 ```javascript
@@ -82,7 +86,7 @@ The default termination handler performs the following:
 4. Disconnect the worker (this step is safely skipped if the process is not running in a cluster)
 5. Terminate the process if the timer expires
 
-Note that the timer itself is not retained; if all outstanding events (including existing requests) are resolved before the termination time, the process will terminate before the timer has expired.
+Note that the timer itself is not retained; if all outstanding events (including existing requests) are resolved before the termination time, the process will terminate before the timer has expired.:
 
 If the default termination handler doesn't do everything you need, you have a couple of options. The first is to trap the `seppuku` event on the server object, which is emitted as soon as the seppuku process begins. It receives two parameters, the first the amount of time until the process will be terminated, and the second a cancellation callback (more about this later).
 
