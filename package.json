@@ -1,0 +1,35 @@
+{
+  "name": "seppuku",
+  "version": "0.1.0",
+  "description": "Allow your worker processes to die honourably",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -R dot -u tdd tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/mtabini/seppuku.git"
+  },
+  "keywords": [
+    "cluster",
+    "restart",
+    "graceful",
+    "memory",
+    "leak"
+  ],
+  "author": "Marco Tabini <marcot@tabini.ca>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/mtabini/seppuku/issues"
+  },
+  "devDependencies": {
+    "restify": "~2.6.0",
+    "chai": "~1.7.2",
+    "mocha": "~1.12.0",
+    "request": "~2.25.0",
+    "async": "~0.2.9"
+  },
+  "dependencies": {
+    "extend": "~1.1.3"
+  }
+}
