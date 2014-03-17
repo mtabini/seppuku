@@ -98,7 +98,8 @@ describe('Seppuku', function() {
             
             maxRequests: 3,
             
-            kaishakunin: function() {
+            kaishakunin: function(err) {
+                expect(err).to.be.an('object');
                 done();
             }
         };

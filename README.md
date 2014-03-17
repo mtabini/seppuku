@@ -97,9 +97,10 @@ If the default termination handler doesn't do everything you need, you have a co
 Here's an example:
 
 ```javascript
-server.on('seppuku', function(count, cancel) {
+server.on('seppuku', function(count, cancel, err) {
     // Terminate outstanding long-running connections
     terminateAllConnections(); // ...
+    // `err` contains the exception that caused seppuku to start, if any
 });
 ```
 
@@ -107,9 +108,10 @@ If you desire a completely custom termination process, you can pass your own `ka
 
 ```javascript
 var options = {
-    kaishakunin: function() {
+    kaishakunin: function(err) {
         // Terminate immediately
         process.exit(255);
+        // `err` contains the exception that caused seppuku to start, if any
     }
 }
 ```
@@ -123,7 +125,7 @@ Simply call `server.seppuku()`, and all will be handled for you.
 You can terminate a seppuku operation by trapping the `seppuku` event emitted by your server instance and calling the callback that the handler receives as its second parameter. This causes seppuku to be completely reset as if you were restarting the server.
 
 ```javascript
-server.on('seppuku', function(count, cancel) {
+server.on('seppuku', function(count, cancel, err) {
     if (someCondition) {
         cancel();
     }
